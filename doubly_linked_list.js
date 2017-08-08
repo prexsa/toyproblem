@@ -1,9 +1,14 @@
 // implement a doubly linked list
-// with methods: add, remove
+
+// Time Complexity
+// access: O(n)
+// search: O(1)
+// insert: O(1)
+// delete: O(1)
 
 class Node {
-  constructor(value) {
-    this.value = value;
+  constructor(val) {
+    this.value = val;
     this.previous = null;
     this.next = null;
   }
@@ -13,52 +18,54 @@ class DoublyList {
   constructor() {
     this.head = null;
     this.tail = null;
+    this.length = 0;
   }
 }
 
-DoublyList.prototype.add = function(value) {
-  let node = new Node(value);
-  let currentNode = this.head;
+DoublyList.prototype.add = function(val) {
+  let node = new Node(val);
 
-  if(!currentNode) {
+  if(!this.head) {
     this.head = node;
     this.tail = node;
-    return node;
   }else{
-    this.tail.next = node;
     node.previous = this.tail;
+    this.tail.next = node;
     this.tail = node;
   }
-
-  return node;
+  this.length++;
 }
 
-DoublyList.prototype.remove = function(value) {
+DoublyList.prototype.remove = function(val) {
   let currentNode = this.head;
 
-  if(currentNode.value === value) {
-    this.head = currentNode.next;
-
-    // if there is only one node
-    if(this.head) {
-      this.head.previous = null;
+  while(currentNode) {
+    if(currentNode.value === val) {
+      if(currentNode === this.head && currentNode === this.tail) {
+        this.head = null;
+        this.tail = null;
+      }else if(currentNode === this.head) {
+        this.head = this.head.next;
+        this.head.previous = null;
+      }else if(currentNode === this.tail) {
+        this.tail = this.tail.previous;
+        this.tail.next = null;
+      }else{
+        currentNode.previous.next = currentNode.next;
+        currentNode.next.previous = currentNode.previous;
+      }
+      this.length--;
     }
-    return this.head;
-  }
-
-  while(currentNode.next) {
-    if(currentNode.value === value) {
-      previous.next = currentNode.next;
-      currentNode.next.previous = previous;
-      return this.head;
-    }
-    previous = currentNode;
     currentNode = currentNode.next;
   }
+}
 
-  // if last node
-  if(currentNode.value === value) {
-    previous.next = null;
+DoublyList.prototype.print = function() {
+  let str = "";
+  let currentNode = this.head;
+  while(currentNode) {
+    str += currentNode.value + " ";
+    currentNode = currentNode.next;
   }
-  return this.head;
+  console.log(str);
 }
