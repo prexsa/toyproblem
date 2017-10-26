@@ -1,6 +1,11 @@
 // implement a singley linked list
 // with methods: add, remove
 
+// Access = O(n)
+// Search = O(n)
+// Insertion = O(1)
+// Deletion = O(1)
+
 class Node {
   constructor(value) {
     this.value = value;
@@ -8,30 +13,30 @@ class Node {
   }
 }
 
-class SinglyList {
+class SingleyLinkedList {
   constructor() {
     this.head = null;
+    this.tail = null;
+    this.length = 0;
   }
 }
 
-SinglyList.prototype.add = function(value) {
+SingleyLinkedList.prototype.add = (value) => {
   let node = new Node(value);
-
+  
   if(!this.head) {
     this.head = node;
-    return node;
+    this.tail = node;
   }else{
-    currentNode = this.head;
-    while(currentNode.next) {
-      currentNode = currentNode.next;
-    }
-    current.next = node;
+    this.tail.next = node;
+    this.tail = node;
   }
+  this.length++;
+  return node;
 }
 
-SinglyList.prototype.remove = function(value) {
+SingleyLinkedList.prototype.remove = (value) => {
   let currentNode = this.head;
-
   if(currentNode.value === value) {
     this.head = currentNode.next;
   }else{
@@ -45,12 +50,38 @@ SinglyList.prototype.remove = function(value) {
       previousNode = currentNode;
       currentNode = currentNode.next;
     }
+
+    if(currentNode.value = value) {
+      previousNode.next = null;
+    }
   }
 }
 
-let sl = new SinglyList();
-sl.add(1);
-sl.add(2);
-sl.add(3);
-sl.add(4);
-// 1-> 2-> 3-> 4
+SingleyLinkedList.prototype.reverse = () => {
+  let currentNode = this.head;
+  let previous;
+  while(currentNode.next) {
+    let next = currentNode.next;
+    currentNode.next = previous;
+    previous = currentNode;
+    currentNode = next;
+  }
+  currentNode.next = previous;
+  return currentNode;
+}
+
+SingleyLinkedList.prototype.print = () => {
+  let str = '';
+  let currentNode = this.head;
+  while(currentNode) {
+    str += currentNode.value + ' ';
+    currentNode = currentNode.next;
+  }
+  console.log(str.trim());
+}
+
+const list = new SingleyLinkedList();
+list.add(1)
+list.add(2)
+list.add(3)
+list.add(4)
